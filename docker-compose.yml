@@ -1,0 +1,54 @@
+#name: demo
+
+version: '3'
+
+services:
+  proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: ${PROJECT_NAME}_proxy
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./docker/certs:/etc/nginx/certs:ro
+
+  mysql:
+    image: mysql:8.0
+    container_name: ${PROJECT_NAME}_mysql
+    platform: linux/amd64
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: demo_db
+      MYSQL_USER: demo_user
+      MYSQL_PASSWORD: demo_pwd
+      MYSQL_ROOT_PASSWORD: demo_root_pwd
+    volumes:
+      - ./docker/storage/mysql:/var/lib/mysql
+
+  nodejs:
+    build:
+      args:
+        APP_NAME: demo
+        APP_PORT: 3000
+        NODE_ENV: local
+      context: .
+      dockerfile: ./docker/local.Dockerfile
+    container_name: ${PROJECT_NAME}_demo
+    environment:
+      NODE_ENV: local
+      APP_PORT: 3000
+      VIRTUAL_HOST: demo.local
+      DB_HOST: mysql
+      DB_HOST_READ: mysql
+      DB_PORT: 3306
+      DB_NAME: demo_db
+      DB_USERNAME: demo_user
+      DB_PASSWORD: demo_pwd
+      VIRTUAL_PORT: 3000
+    expose:
+      - 3000
+    volumes:
+      - .:/app
+    depends_on:
+      [mysql]
