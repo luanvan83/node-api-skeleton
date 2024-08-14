@@ -8,7 +8,7 @@
     "test": "jest",
     "test:e2e": "DB_LOGGING=false jest --config ./tests/e2e/jest-e2e.json --detectOpenHandles",
     "build": "rm -rf dist && tsc && cp -rp node_modules dist/node_modules && cp -rp package.json dist/",
-    "prd": "node index.js",
+    "prd": "cd dist/src && node index.js",
     "migrate": "typeorm-ts-node-commonjs -d ./src/typeorm-data-source.ts migration:run",
     "migration:create": "cd ./src/migrations && typeorm-ts-node-commonjs migration:create",
     "migration:generate": "cd ./src/migrations && typeorm-ts-node-commonjs migration:generate -d ../typeorm-data-source.ts",

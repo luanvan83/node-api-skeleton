@@ -11,7 +11,7 @@ export class UserController {
   @Get('/')
   async getAllUsers() {
     const users = await this.userService.getAllUsers();
-    this.logger.info('This is a log from controller', {"userCount": users.length});
+    this.logger.info('This is a log from getAllUsers', {"userCount": users.length});
     return users;
   }
 

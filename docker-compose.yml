@@ -1,11 +1,12 @@
 #name: demo
 
-version: '3'
+#version: '3'
 
 services:
   proxy:
     image: nginxproxy/nginx-proxy
     container_name: ${PROJECT_NAME}_proxy
+    platform: linux/amd64
     ports:
       - 80:80
     volumes:

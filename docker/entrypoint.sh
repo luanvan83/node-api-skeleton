@@ -19,26 +19,22 @@ fi
 #---------------------------------
 # Verify node_modules if doesn't exist
 #---------------------------------
+if ! [[ -d "${APP_DIR}/node_modules" ]];
+then
+  npm install
+fi
+
 if [[ ${NODE_ENV} = "local" ]];
 then
-
   cp -rp ./src/.env.${NODE_ENV} ./src/.env
-  
   START_CMD="npm run dev"
-
-  if ! [[ -d "${APP_DIR}/node_modules" ]];
-  then
-    npm install
-  fi
-
-elif [ ${NODE_ENV} = "production" ] || [ ${NODE_ENV} = "development" ];
+elif [ ${NODE_ENV} = "production" ] || [ ${NODE_ENV} = "development" ] || [ ${NODE_ENV} = "staging" ] || [ ${NODE_ENV} = "prd" ] || [ ${NODE_ENV} = "dev" ] || [ ${NODE_ENV} = "stg" ];
 then
-  START_CMD="node index.js"
-
+  cp -rp ./src/.env.${NODE_ENV} ./dist/src/.env
+  START_CMD="npm run prd"
 else
-  echo "[ERROR] NODE_ENV: ${NODE_ENV} does not defined."
+  echo "[ERROR] NODE_ENV: ${NODE_ENV} is not defined."
   exit 1
-
 fi
 
 #---------------------------------

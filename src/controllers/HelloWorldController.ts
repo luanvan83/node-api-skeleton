@@ -8,6 +8,6 @@ export class HelloWorldController {
 
   @Get('/')
   helloWorld() {
-    return "Hello world!";
+    return "Hello the world!";
   }
 }
